@@ -1,39 +1,32 @@
 import { useEffect, useState } from "react";
 import Navbar from "./components/navbar";
-import ProductCard from "./components/ProductCard";
-import { Router, Routes } from "react-router-dom";
+import Home from "./pages/home";
 
 function App() {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-    </div>
-  );
-}
+  const [products, setProducts] = useState([]);
 
-useEffect(()=>{  
+  useEffect(() => {
     async function getProducts() {
       try {
-        const response = await fetch(
-          "https://fakestoreapi.com/products"
-        );
+        const response = await fetch("https://fakestoreapi.com/products");
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
-        const data = await response.json();                
+        const data = await response.json();
         setProducts(data);
       } catch (error) {
         console.error(error);
       }
     }
-    getProducts();  
-},[]);
-    return(
-        <>
-        <Navbar />
-        </>
-       
-    );
-};
+    getProducts();
+  }, []);
 
-export default App
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      <Home />
+    </div>
+  );
+}
+
+export default App;
