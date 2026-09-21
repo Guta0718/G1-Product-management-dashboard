@@ -3,8 +3,13 @@ import Navbar from "./components/navbar";
 import ProductCard from "./components/ProductCard";
 import { Router, Routes } from "react-router-dom";
 
-function App(){
-    const[products,setProducts]=useState([])
+function App() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+    </div>
+  );
+}
 
 useEffect(()=>{  
     async function getProducts() {
