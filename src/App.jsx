@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { Router, Routes } from "react-router-dom";
 import Navbar from "./components/navbar";
 import ProductCard from "./components/ProductCard";
-import { Router, Routes } from "react-router-dom";
+import Home from "./pages/home";
 
 function App(){
     const[products,setProducts]=useState([])
@@ -26,6 +27,7 @@ useEffect(()=>{
     return(
         <>
         <Navbar />
+        <Home />
         </>
        
     );
