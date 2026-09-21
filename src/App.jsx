@@ -1,4 +1,7 @@
-import Navbar from "./components/Navbar";
+import { useEffect, useState } from "react";
+import Navbar from "./components/navbar";
+import ProductCard from "./components/ProductCard";
+import { Router, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -8,4 +11,29 @@ function App() {
   );
 }
 
-export default App;
+useEffect(()=>{  
+    async function getProducts() {
+      try {
+        const response = await fetch(
+          "https://fakestoreapi.com/products"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();                
+        setProducts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getProducts();  
+},[]);
+    return(
+        <>
+        <Navbar />
+        </>
+       
+    );
+};
+
+export default App
