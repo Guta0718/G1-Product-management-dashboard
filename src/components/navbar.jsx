@@ -1,21 +1,3 @@
-// import { Link } from "react-router-dom";
-
-        <div className="flex gap-5 absolute right-7 ">
-            <Link to="/" className="hover:text-sky-700"> Home</Link>
-            <Link to="/products" className="hover:text-sky-700"> Products</Link>
-            <Link to="/about" className="hover:text-sky-700"> About us</Link>
-            <Link to="/contact" className="hover:text-sky-700"> Contact us</Link>
-            <Link to="/login" className="hover:text-sky-700"> Log in</Link>
-        </div>
-        
-//         </div>
-
-//     );
-// }
-
-// export default Navbar;
-
-//=================================================//
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
