@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
 
-function App(){
-    
-    return(
-        <>
-        <Navbar />
-        </>
-    );
-};
+function App() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+    </div>
+  );
+}
 
-export default App
+export default App;
