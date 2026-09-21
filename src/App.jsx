@@ -4,8 +4,13 @@ import Navbar from "./components/navbar";
 import ProductCard from "./components/ProductCard";
 import Home from "./pages/home";
 
-function App(){
-    const[products,setProducts]=useState([])
+function App() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+    </div>
+  );
+}
 
 useEffect(()=>{  
     async function getProducts() {
