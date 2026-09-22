@@ -1,7 +1,7 @@
 /*
 function ProductCard({ product }) {
   return (
-    <div className="border rounded-lg p-4 shadow-sm bg-white">
+    <div className=" p-5 shadow-sm bg-white">
       <img
         src={product.image}
         alt={product.title}
@@ -10,7 +10,6 @@ function ProductCard({ product }) {
       <h2 className="font-semibold text-lg">
         {product.title}
       </h2>
-
       <p className="text-lg font-bold mt-2">
         {product.price} ETB
       </p>
