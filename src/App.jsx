@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Home from "./pages/home";
+import Contact from "./pages/Contact";
 import Products from "./pages/products";
-import ProductDetails from "./pages/productDetails";
+import Login from "./pages/login";
+import About from "./pages/about";
 
 function App() {
   return (
