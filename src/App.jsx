@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/navbar";
+import Home from "./pages/home";
+import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/products";
@@ -10,6 +13,7 @@ function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<Products />} />
         </Routes>
       </main>
