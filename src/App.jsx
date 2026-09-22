@@ -1,30 +1,19 @@
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Home from "./pages/home";
+import Products from "./pages/products";
+import ProductDetails from "./pages/productDetails";
 
 function App() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    async function getProducts() {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getProducts();
-  }, []);
-
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <Home />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+      </Routes>
     </div>
   );
 }
