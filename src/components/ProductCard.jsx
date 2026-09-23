@@ -32,7 +32,7 @@ function ProductCard({ product }) {
 
         <div className="mt-auto flex items-center justify-between pt-3">
           <span className="font-display text-lg font-semibold text-ink">
-            ETB {price.toFixed(2)}
+            {price.toFixed(2)} ETB
           </span>
           <Link
             to={`/products/${id}`}
