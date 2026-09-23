@@ -1,127 +1,109 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import LoadingState from "../components/LoadingState";
-import ErrorState from "../components/ErrorState";
-import { getProductById } from "../services/productService";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getProductById } from "../services/productService.js";
+import LoadingState from "../components/LoadingState.jsx";
+import ErrorState from "../components/ErrorState.jsx";
 
-function ProductDetails() {
+function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [status, setStatus] = useState("loading"); // loading | success | error
 
-  const loadProduct = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const data = await getProductById(id);
-      setProduct(data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load product.");
-    } finally {
-      setLoading(false);
-    }
+  const loadProduct = () => {
+    setStatus("loading");
+    getProductById(id)
+      .then((data) => {
+        // Fake Store API returns null (with a 200) for an id that doesn't exist
+        if (!data) {
+          setStatus("error");
+          return;
+        }
+        setProduct(data);
+        setStatus("success");
+      })
+      .catch(() => setStatus("error"));
   };
 
   useEffect(() => {
-    let cancelled = false;
-
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await getProductById(id);
-
-        if (!cancelled) {
-          setProduct(data);
-        }
-      } catch (err) {
-        console.error(err);
-
-        if (!cancelled) {
-          setError("Failed to load product.");
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchProduct();
-
-    return () => {
-      cancelled = true;
-    };
+    loadProduct();
+    // Re-run whenever the id in the URL changes (e.g. navigating from one
+    // product's page straight to another via browser history).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (loading) {
-    return <LoadingState message="Loading product..." />;
-  }
-
-  if (error) {
-    return (
-      <main className="container-page py-10">
-        <ErrorState message={error} onRetry={loadProduct} />
-      </main>
-    );
-  }
-
-  if (!product) {
-    return (
-      <main className="container-page py-10">
-        <p className="text-center text-ink/60">
-          Product not found.
-        </p>
-      </main>
-    );
-  }
-
   return (
-    <main className="container-page py-10">
-      <Link
-        to="/products"
-        className="mb-8 inline-block rounded-full border border-ink px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-paper"
+    <div className="container-page py-14">
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="mb-8 text-sm font-medium text-ink/60 hover:text-ink"
       >
-        ← Back to Products
-      </Link>
-      <div className="grid gap-10 md:grid-cols-2">
-        <div className="flex items-center justify-center rounded-2xl bg-sand p-10">
-          <img
-            src={product.image}
-            alt={product.title}
-            className="max-h-96 w-full object-contain mix-blend-multiply"
-          />
+        ← Back
+      </button>
+
+      {status === "loading" && <LoadingState message="Loading product..." />}
+
+      {status === "error" && (
+        <ErrorState
+          message="Something went wrong. Please try again."
+          onRetry={loadProduct}
+        />
+      )}
+
+      {status === "success" && product && (
+        <div className="grid gap-12 md:grid-cols-2">
+          <div className="flex items-center justify-center rounded-2xl bg-sand p-12">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="max-h-96 w-full object-contain mix-blend-multiply"
+            />
+          </div>
+
+          <div>
+            <span className="w-fit rounded-full bg-cobalt/10 px-3 py-1 text-xs font-medium capitalize text-cobalt">
+              {product.category}
+            </span>
+
+            <h1 className="mt-4 text-2xl font-semibold leading-snug tracking-tight md:text-3xl">
+              {product.title}
+            </h1>
+
+            {product.rating && (
+              <p className="mt-2 text-sm text-ink/50">
+                {product.rating.rate} / 5 · {product.rating.count} reviews
+              </p>
+            )}
+
+            <p className="mt-6 font-display text-3xl font-semibold text-ink">
+              ${product.price.toFixed(2)}
+            </p>
+
+            <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/60">
+              {product.description}
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition-colors hover:bg-cobalt"
+              >
+                Add to cart
+              </button>
+              <Link
+                to="/products"
+                className="text-sm font-medium text-ink/70 hover:text-ink"
+              >
+                Continue browsing
+              </Link>
+            </div>
+          </div>
         </div>
-
-        <div className="flex flex-col justify-center">
-          <span className="w-fit rounded-full bg-cobalt/10 px-3 py-1 text-xs font-medium text-cobalt">
-            {product.category}
-          </span>
-
-          <h1 className="mt-4 font-display text-3xl font-semibold text-ink">
-            {product.title}
-          </h1>
-
-          <p className="mt-4 text-2xl font-semibold text-ink">
-            ${product.price.toFixed(2)}
-          </p>
-
-          <p className="mt-4 text-ink/60">
-            ⭐ {product.rating?.rate} ({product.rating?.count} reviews)
-          </p>
-
-          <p className="mt-6 leading-7 text-ink/70">
-            {product.description}
-          </p>
-        </div>
-      </div>
-    </main>
+      )}
+    </div>
   );
 }
 
-export default ProductDetails;
+export default ProductDetail;
