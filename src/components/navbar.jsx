@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { selectTotalItems, useCartStore } from "../stores/useCartStore.js";
 
 const links = [
   { to: "/", label: "Home" },
@@ -10,6 +11,7 @@ const links = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const totalItems = useCartStore(selectTotalItems);
 
   const linkClass = ({ isActive }) =>
     `text-sm font-medium transition-colors ${
@@ -45,7 +47,18 @@ function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          <NavLink
+            to="/cart"
+            className="relative rounded-full border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5"
+          >
+            Cart
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-cobalt px-1 text-[10px] font-semibold text-paper">
+                {totalItems > 99 ? "99+" : totalItems}
+              </span>
+            )}
+          </NavLink>
           <NavLink
             to="/login"
             className="rounded-full border border-ink px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-paper"
@@ -84,6 +97,14 @@ function Navbar() {
                 {link.label}
               </NavLink>
             ))}
+            <NavLink
+              to="/cart"
+              className={linkClass}
+              onClick={() => setOpen(false)}
+            >
+              Cart{totalItems > 0 ? ` (${totalItems})` : ""}
+            </NavLink>
+
             <NavLink
               to="/login"
               className={linkClass}
