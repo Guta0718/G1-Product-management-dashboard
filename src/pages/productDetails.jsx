@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../services/productService.js";
 import LoadingState from "../components/LoadingState.jsx";
 import ErrorState from "../components/ErrorState.jsx";
+import { useCartStore } from "../stores/useCartStore.js";
 
 function ProductDetail() {
   const { id } = useParams();
@@ -10,6 +11,8 @@ function ProductDetail() {
 
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading"); // loading | success | error
+  const [addedFeedback, setAddedFeedback] = useState(false);
+  const addToCart = useCartStore((s) => s.addToCart);
 
   const loadProduct = () => {
     setStatus("loading");
@@ -89,9 +92,22 @@ function ProductDetail() {
               <button
                 type="button"
                 className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition-colors hover:bg-cobalt"
+                onClick={() => {
+                  addToCart(product);
+                  setAddedFeedback(true);
+                  window.setTimeout(() => setAddedFeedback(false), 2000);
+                }}
               >
                 Add to cart
               </button>
+              {addedFeedback && (
+                <span className="text-sm font-medium text-sage">
+                  Added —{" "}
+                  <Link to="/cart" className="underline hover:text-ink">
+                    View cart
+                  </Link>
+                </span>
+              )}
               <Link
                 to="/products"
                 className="text-sm font-medium text-ink/70 hover:text-ink"

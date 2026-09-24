@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Home from "./pages/home";
 import Contact from "./pages/contact";
+import Cart from "./pages/Cart.jsx";
 
 import Products from "./pages/products";
 import Login from "./pages/login";
@@ -20,6 +21,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
