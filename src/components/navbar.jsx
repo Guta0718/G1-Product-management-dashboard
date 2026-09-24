@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { selectTotalItems, useCartStore } from "../stores/useCartStore.js";
+import useAuthStore from "../stores/authStore.js";
 
 const links = [
   { to: "/", label: "Home" },
@@ -12,6 +13,8 @@ const links = [
 function Navbar() {
   const [open, setOpen] = useState(false);
   const totalItems = useCartStore(selectTotalItems);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   const linkClass = ({ isActive }) =>
     `text-sm font-medium transition-colors ${
@@ -47,7 +50,7 @@ function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        {/* <div className="hidden items-center gap-3 md:flex">
           <NavLink
             to="/cart"
             className="relative rounded-full border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5"
@@ -65,6 +68,44 @@ function Navbar() {
           >
             Log in
           </NavLink>
+        </div> */}
+
+        <div className="hidden items-center gap-3 md:flex">
+          <NavLink
+            to="/cart"
+            className="relative rounded-full border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5"
+          >
+            Cart
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-cobalt px-1 text-[10px] font-semibold text-paper">
+                {totalItems > 99 ? "99+" : totalItems}
+              </span>
+            )}
+          </NavLink>
+          {user ? (
+            <>
+              <NavLink
+                to="/dashboard"
+                className="text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+              >
+                Dashboard
+              </NavLink>
+              <button
+                type="button"
+                onClick={logout}
+                className="rounded-full border border-ink px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-paper"
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <NavLink
+              to="/login"
+              className="rounded-full border border-ink px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-paper"
+            >
+              Log in
+            </NavLink>
+          )}
         </div>
 
         <button
@@ -97,6 +138,13 @@ function Navbar() {
                 {link.label}
               </NavLink>
             ))}
+            {/* <NavLink
+              to="/cart"
+              className={linkClass}
+              onClick={() => setOpen(false)}
+            >
+              Cart{totalItems > 0 ? ` (${totalItems})` : ""}
+            </NavLink> */}
             <NavLink
               to="/cart"
               className={linkClass}
@@ -104,14 +152,35 @@ function Navbar() {
             >
               Cart{totalItems > 0 ? ` (${totalItems})` : ""}
             </NavLink>
-
-            <NavLink
-              to="/login"
-              className={linkClass}
-              onClick={() => setOpen(false)}
-            >
-              Log in
-            </NavLink>
+            {user ? (
+              <>
+                <NavLink
+                  to="/dashboard"
+                  className={linkClass}
+                  onClick={() => setOpen(false)}
+                >
+                  Dashboard
+                </NavLink>
+                <button
+                  type="button"
+                  className="text-left text-sm font-medium text-ink/70 hover:text-ink"
+                  onClick={() => {
+                    logout();
+                    setOpen(false);
+                  }}
+                >
+                  Log out
+                </button>
+              </>
+            ) : (
+              <NavLink
+                to="/login"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                Log in
+              </NavLink>
+            )}
           </div>
         </nav>
       )}
