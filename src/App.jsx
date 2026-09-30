@@ -3,6 +3,7 @@ import Navbar from "./components/navbar";
 import Home from "./pages/home";
 import Contact from "./pages/contact";
 import Cart from "./pages/Cart.jsx";
+import Wishlist from './pages/Wishlist.jsx'
 import Products from "./pages/products";
 import Login from "./pages/login";
 import About from "./pages/about";
@@ -23,6 +24,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route
           path="/dashboard"
           element={
