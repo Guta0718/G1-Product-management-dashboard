@@ -2,6 +2,10 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { selectTotalItems, useCartStore } from "../stores/useCartStore.js";
 import useAuthStore from "../stores/authStore.js";
+import {
+  selectWishlistCount,
+  useWishlistStore,
+} from "../stores/useWishlistStore.js";
 
 const links = [
   { to: "/", label: "Home" },
@@ -13,6 +17,7 @@ const links = [
 function Navbar() {
   const [open, setOpen] = useState(false);
   const totalItems = useCartStore(selectTotalItems);
+  const wishlistCount = useWishlistStore(selectWishlistCount);
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
@@ -71,6 +76,17 @@ function Navbar() {
         </div> */}
 
         <div className="hidden items-center gap-3 md:flex">
+          <NavLink
+            to="/wishlist"
+            className="relative rounded-full border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5"
+          >
+            Wishlist
+            {wishlistCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-coral px-1 text-[10px] font-semibold text-paper">
+                {wishlistCount > 99 ? "99+" : wishlistCount}
+              </span>
+            )}
+          </NavLink>
           <NavLink
             to="/cart"
             className="relative rounded-full border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5"
