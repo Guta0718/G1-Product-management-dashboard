@@ -28,12 +28,12 @@ function Footer() {
           <p className="mt-3 text-sm text-paper/60">
             Product data is provided by the{' '}
             <a
-              href="https://fakestoreapi.com"
+              href="https://dummyjson.com"
               target="_blank"
               rel="noreferrer"
               className="underline decoration-paper/30 underline-offset-4 hover:text-paper"
             >
-              Fake Store API
+              DummyJSON
             </a>
             , used here for demo purposes only.
           </p>

@@ -1,7 +1,6 @@
 const BASE_URL = 'https://dummyjson.com';
 
-
-// Fetches the list of products from the Fake Store API.
+// Fetches the list of products from DummyJSON.
 export async function getAllProducts() {
     const response = await fetch(`${BASE_URL}/products`);
     if (!response.ok) {
@@ -11,14 +10,12 @@ export async function getAllProducts() {
     return data.products;
 }
 
-
-// Fetches the list of product categories from the Fake Store API.
-
+// Fetches the list of product categories from DummyJSON.
 export async function getAllCategories() {
-  const response = await fetch(`${BASE_URL}/products/categories`)
+  const response = await fetch(`${BASE_URL}/products/categories`);
 
   if (!response.ok) {
-    throw new Error(`Failed to load categories (status ${response.status})`)
+    throw new Error(`Failed to load categories (status ${response.status})`);
   }
 
   return response.json();
@@ -36,10 +33,10 @@ export async function getProductsByCategory(category) {
 // Fetches the list of products in a specific category from the Fake Store API.
 
 export async function getProductById(id) {
-  const response = await fetch(`${BASE_URL}/products/${id}`)
+  const response = await fetch(`${BASE_URL}/products/${id}`);
 
   if (!response.ok) {
-    throw new Error(`Failed to load product ${id} (status ${response.status})`)
+    throw new Error(`Failed to load product ${id} (status ${response.status})`);
   }
 
   return response.json();
