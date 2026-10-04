@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
+import WishlistButton from "./WishlistButton.jsx";
+import {
+  selectIsInWishlist,
+  useWishlistStore,
+} from "../stores/useWishlistStore.js";
 
 function ProductCard({ product }) {
   const { id, title, price, thumbnail, category, description } = product;
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+  const saved = useWishlistStore(selectIsInWishlist(id));
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white transition-shadow hover:shadow-lg hover:shadow-ink/5">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white transition-shadow hover:shadow-lg hover:shadow-ink/5">
       <Link
         to={`/products/${id}`}
         className="flex h-48 items-center justify-center bg-sand p-6"
@@ -16,6 +23,16 @@ function ProductCard({ product }) {
           className="h-full w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
         />
       </Link>
+
+      <WishlistButton
+        saved={saved}
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleWishlist(product);
+        }}
+        className="absolute right-3 top-3"
+      />
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         <span className="w-fit rounded-full bg-cobalt/10 px-3 py-1 text-xs font-medium text-cobalt">
