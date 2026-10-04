@@ -20,7 +20,7 @@ function ProductCard({ product }) {
           src={images}
           alt={title}
           loading="lazy"
-          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-115"
         />
       </Link>
 
