@@ -18,7 +18,7 @@ function ProductDetail() {
     setStatus("loading");
     getProductById(id)
       .then((data) => {
-        // Fake Store API returns null (with a 200) for an id that doesn't exist
+        // Missing or invalid ids are handled via the error state from the API
         if (!data) {
           setStatus("error");
           return;
@@ -59,7 +59,7 @@ function ProductDetail() {
         <div className="grid gap-12 md:grid-cols-2">
           <div className="flex items-center justify-center rounded-2xl bg-sand p-12">
             <img
-              src={product.image}
+              src={product.thumbnail}
               alt={product.title}
               className="max-h-96 w-full object-contain mix-blend-multiply"
             />
@@ -74,9 +74,9 @@ function ProductDetail() {
               {product.title}
             </h1>
 
-            {product.rating && (
+            {product.rating != null && (
               <p className="mt-2 text-sm text-ink/50">
-                {product.rating.rate} / 5 · {product.rating.count} reviews
+                {product.rating} / 5 · {product.reviews?.length ?? 0} reviews
               </p>
             )}
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
-  const { id, title, price, image, category, description } = product;
+  const { id, title, price, thumbnail, category, description } = product;
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white transition-shadow hover:shadow-lg hover:shadow-ink/5">
@@ -10,7 +10,7 @@ function ProductCard({ product }) {
         className="flex h-48 items-center justify-center bg-sand p-6"
       >
         <img
-          src={image}
+          src={thumbnail}
           alt={title}
           loading="lazy"
           className="h-full w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"

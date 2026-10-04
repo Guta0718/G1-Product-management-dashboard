@@ -62,7 +62,7 @@ function Home() {
                   className="flex aspect-square items-center justify-center rounded-2xl bg-sand p-6"
                 >
                   <img
-                    src={product.image}
+                    src={product.thumbnail}
                     alt={product.title}
                     className="h-full w-full object-contain mix-blend-multiply"
                   />
