@@ -40,7 +40,7 @@ function ProductDetail() {
         <div className="grid gap-12 md:grid-cols-2">
           <div className="relative flex items-center justify-center rounded-2xl bg-sand p-12">
             <img
-              src={product.thumbnail}
+              src={product.images}
               alt={product.title}
               className="max-h-96 w-full object-contain mix-blend-multiply"
             />

@@ -65,7 +65,7 @@ function Cart() {
                 className="flex h-24 w-full shrink-0 items-center justify-center rounded-xl bg-sand p-4 sm:h-28 sm:w-28"
               >
                 <img
-                  src={item.thumbnail ?? item.image}
+                  src={item.images}
                   alt={item.title}
                   className="max-h-full max-w-full object-contain mix-blend-multiply"
                 />
