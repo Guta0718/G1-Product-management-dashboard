@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getProductById } from "../services/productService.js";
 import LoadingState from "../components/LoadingState.jsx";
 import ErrorState from "../components/ErrorState.jsx";
 import { useCartStore } from "../stores/useCartStore.js";
@@ -9,39 +8,17 @@ import {
   selectIsInWishlist,
   useWishlistStore,
 } from "../stores/useWishlistStore.js";
+import { useProduct } from "../hooks/useProducts.js";
 
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState(null);
-  const [status, setStatus] = useState("loading"); // loading | success | error
+  const { data: product, isLoading, isError } = useProduct(id);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const addToCart = useCartStore((s) => s.addToCart);
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
   const saved = useWishlistStore(selectIsInWishlist(id));
-
-  const loadProduct = () => {
-    setStatus("loading");
-    getProductById(id)
-      .then((data) => {
-        // Missing or invalid ids are handled via the error state from the API
-        if (!data) {
-          setStatus("error");
-          return;
-        }
-        setProduct(data);
-        setStatus("success");
-      })
-      .catch(() => setStatus("error"));
-  };
-
-  useEffect(() => {
-    loadProduct();
-    // Re-run whenever the id in the URL changes (e.g. navigating from one
-    // product's page straight to another via browser history).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
 
   return (
     <div className="container-page py-14">
@@ -53,16 +30,13 @@ function ProductDetail() {
         ← Back
       </button>
 
-      {status === "loading" && <LoadingState message="Loading product..." />}
+      {isLoading && <LoadingState message="Loading product..." />}
 
-      {status === "error" && (
-        <ErrorState
-          message="Something went wrong. Please try again."
-          onRetry={loadProduct}
-        />
+      {isError && (
+        <ErrorState message="Something went wrong. Please try again." />
       )}
 
-      {status === "success" && product && (
+      {!isLoading && !isError && product && (
         <div className="grid gap-12 md:grid-cols-2">
           <div className="relative flex items-center justify-center rounded-2xl bg-sand p-12">
             <img

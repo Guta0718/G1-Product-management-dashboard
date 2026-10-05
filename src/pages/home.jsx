@@ -1,27 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllProducts } from "../services/productService.js";
 import ProductCard from "../components/ProductCard.jsx";
 import LoadingState from "../components/LoadingState.jsx";
 import ErrorState from "../components/ErrorState.jsx";
+import { useProducts } from "../hooks/useProducts.js";
 
 function Home() {
-  const [featured, setFeatured] = useState([]);
-  const [status, setStatus] = useState("loading");
-
-  const loadFeatured = () => {
-    setStatus("loading");
-    getAllProducts()
-      .then((data) => {
-        setFeatured(data.slice(0, 4));
-        setStatus("success");
-      })
-      .catch(() => setStatus("error"));
-  };
-
-  useEffect(() => {
-    loadFeatured();
-  }, []);
+  const { data, isLoading, isError } = useProducts();
+  const products = data ?? [];
+  const featured = products.slice(0, 4);
 
   return (
     <div>
@@ -56,7 +42,7 @@ function Home() {
           <div className="relative">
             <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-cobalt/5" />
             <div className="grid grid-cols-2 gap-4">
-              {featured.slice(0, 4).map((product) => (
+              {featured.map((product) => (
                 <div
                   key={product.id}
                   className="flex aspect-square items-center justify-center rounded-2xl bg-sand p-6"
@@ -68,7 +54,7 @@ function Home() {
                   />
                 </div>
               ))}
-              {status !== "success" &&
+              {isLoading &&
                 Array.from({ length: 4 }).map((_, i) => (
                   <div
                     key={i}
@@ -94,16 +80,13 @@ function Home() {
           </Link>
         </div>
 
-        {status === "loading" && (
+        {isLoading && (
           <LoadingState message="Loading featured products..." />
         )}
-        {status === "error" && (
-          <ErrorState
-            message="Something went wrong. Please try again."
-            onRetry={loadFeatured}
-          />
+        {isError && (
+          <ErrorState message="Something went wrong. Please try again." />
         )}
-        {status === "success" && (
+        {!isLoading && !isError && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
