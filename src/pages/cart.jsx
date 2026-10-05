@@ -5,7 +5,6 @@ import {
   selectTotalItems,
   useCartStore,
 } from '../stores/useCartStore.js'
-
 function Cart() {
   const cart = useCartStore(selectCart)
   const totalItems = useCartStore(selectTotalItems)
@@ -65,7 +64,7 @@ function Cart() {
                 className="flex h-24 w-full shrink-0 items-center justify-center rounded-xl bg-sand p-4 sm:h-28 sm:w-28"
               >
                 <img
-                  src={item.images}
+                  src={item.thumbnail ?? item.images?.[0] ?? item.image ?? ""}
                   alt={item.title}
                   className="max-h-full max-w-full object-contain mix-blend-multiply"
                 />

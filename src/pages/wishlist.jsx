@@ -59,7 +59,7 @@ function Wishlist() {
               className="flex h-44 items-center justify-center bg-sand p-6"
             >
               <img
-                src={item.image}
+                src={item.thumbnail ?? item.images?.[0] ?? item.image ?? ""}
                 alt={item.title}
                 className="max-h-full max-w-full object-contain mix-blend-multiply"
               />

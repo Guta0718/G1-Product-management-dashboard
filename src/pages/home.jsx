@@ -3,7 +3,6 @@ import ProductCard from "../components/ProductCard.jsx";
 import LoadingState from "../components/LoadingState.jsx";
 import ErrorState from "../components/ErrorState.jsx";
 import { useProducts } from "../hooks/useProducts.js";
-
 function Home() {
   const { data, isLoading, isError } = useProducts();
   const products = data ?? [];
@@ -48,7 +47,12 @@ function Home() {
                   className="flex aspect-square items-center justify-center rounded-2xl bg-sand p-6"
                 >
                   <img
-                    src={product.images}
+                    src={
+                      product.thumbnail ??
+                      product.images?.[0] ??
+                      product.image ??
+                      ""
+                    }
                     alt={product.title}
                     className="h-full w-full object-contain mix-blend-multiply"
                   />

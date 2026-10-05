@@ -4,9 +4,10 @@ import {
   selectIsInWishlist,
   useWishlistStore,
 } from "../stores/useWishlistStore.js";
-
 function ProductCard({ product }) {
-  const { id, title, price, images, category, description } = product;
+  const { id, title, price, category, description, thumbnail, images, image } =
+    product;
+  const photo = thumbnail ?? images?.[0] ?? image ?? "";
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
   const saved = useWishlistStore(selectIsInWishlist(id));
 
@@ -17,7 +18,7 @@ function ProductCard({ product }) {
         className="flex h-48 items-center justify-center bg-sand p-6"
       >
         <img
-          src={images}
+          src={photo}
           alt={title}
           loading="lazy"
           className="h-full w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-115"
